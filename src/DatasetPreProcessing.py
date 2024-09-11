@@ -54,7 +54,7 @@ class AirBnBDatasetPreprocessing:
 
             ''' Data formatting from this point on '''
 
-            # Removing "$" symbol and in 'price' column and converting values to numerical
+            # Removing "$" symbol in 'price' column and converting values to numerical
             self.data['price'] = self.data['price'].str.replace('$', '', regex=False)
             self.data['price'] = self.data['price'].str.replace(',', '', regex=False)
             self.data['price'] = self.data['price'].str.replace(' ', '', regex=False)
@@ -63,7 +63,6 @@ class AirBnBDatasetPreprocessing:
             self.data['service fee'] = self.data['service fee'].str.replace('$', '', regex=False)
             self.data['service fee'] = self.data['service fee'].str.replace(',', '', regex=False)
             self.data['service fee'] = self.data['service fee'].str.replace(' ', '', regex=False)
-            # self.data['service fee'] = pds.to_numeric(self.data['service fee'], errors='coerce')
             self.data['service fee'] = self.data['service fee'].astype(float)
 
             # Converting the 'construction year' column in type Int64
@@ -164,10 +163,15 @@ class AirBnBDatasetPreprocessing:
             except Exception as e:
                 print(f"Errore durante il salvataggio dei dati processati: {str(e)}")
 
+    def show_data(self):
+        self.data.info()
+
 def call():
     original_file_path = '../data/Airbnb_Open_Data.csv'
     output_directory = '../data'
     preprocessor = AirBnBDatasetPreprocessing(original_file_path, output_directory)
     preprocessor.load_data()
+    preprocessor.show_data()
     preprocessor.clean_data()
+    preprocessor.show_data()
     preprocessor.save_processed_data()

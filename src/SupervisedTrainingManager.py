@@ -3,11 +3,12 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import KFold
 from sklearn.preprocessing import MinMaxScaler, LabelEncoder
+import numpy as npy
 import matplotlib.pyplot as plt
 import pandas as pds
 
 
-class TrainingManager:
+class SupervisedTrainingManager:
     # Class constructor
     def __init__(self, input_file_path):
         self.file_path = input_file_path
@@ -74,12 +75,12 @@ class TrainingManager:
         print(f"Mean Squared Error: {mse_scores.mean():.4f} (+/- {mse_scores.std() * 2:.4f})")
         print(f"R-squared Score: {r2_scores.mean():.4f} (+/- {r2_scores.std() * 2:.4f})")
 
-        '''
+
         # If you want to see individual fold scores
         print("\nIndividual Fold Scores:")
         for fold, (mse, r2) in enumerate(zip(mse_scores, r2_scores), 1):
             print(f"Fold {fold}: MSE = {mse:.4f}, R2 = {r2:.4f}")
-        '''
+
         print("Starting the training process")
         # Train final model on entire dataset
         rf_regressor.fit(self.X_train, self.Y_train)
@@ -96,6 +97,12 @@ class TrainingManager:
         print(f"Mean Squared Error: {final_mse:.4f}")
         print(f"R-squared Score: {final_r2:.4f}")
 
+        # Calculate standard deviation of the results
+        pred_std_dev = npy.std(Y_pred)
+        actual_std_dev = npy.std(self.Y_test)
+
+        print(f"Standard Deviation of Predicted Values: {pred_std_dev:.4f}")
+        print(f"Standard Deviation of Actual Values: {actual_std_dev:.4f}")
 
         # Inverse transform
         # self.Y_test = pds.DataFrame(scaler.inverse_transform(Y), columns=Y.columns)
@@ -120,10 +127,10 @@ class TrainingManager:
         # Show the plot
         plt.tight_layout()
         plt.show()
-        '''
+
 
 def call():
     original_file_path = '../data/Post_PreProcessing/Airbnb_Processed_Data.csv'
-    analyzer = TrainingManager(original_file_path)
+    analyzer = SupervisedTrainingManager(original_file_path)
     analyzer.load_data()
     analyzer.learning_and_test()

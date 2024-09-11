@@ -2,7 +2,7 @@
 # import mainOntology
 import DatasetPreProcessing
 import DataAnalyzer
-import TrainingManager
+import SupervisedTrainingManager
 
 
 # DatasetPreProcessing.call()
