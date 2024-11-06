@@ -27,7 +27,8 @@ class AirBnBDatasetPreprocessing:
 
     def clean_data(self):
         if self.data is None:
-            print("Impossibile proseguire con la pulizia dei dati\nDati non trovati")
+            print("Impossibile proseguire con la pulizia dei dati\n"
+                  "Dati non trovati")
         else:
             print("Inizio pulizia dei dati")
             # Dropping unnecessary columns
